@@ -83,13 +83,26 @@ public class FXMLController implements Initializable {
      */
     @FXML
     private void deleteSelectedRows(ActionEvent event) {
-        System.out.println("Reached here...");
+        //System.out.println("Reached here...");
+        Boolean b = false;
         for(int i=0;i<tableview1.getItems().size();i++) {
             Book bk = new Book();
             bk = tableview1.getItems().get(i);
             if(bk.getSelect().isSelected()) {
                 deleteRest(bk.getId());
+                b=true;
             }
+        }
+        if(b) {
+            Alert deleteAlert = new Alert(AlertType.CONFIRMATION);
+            deleteAlert.setHeaderText("Confirmation");
+            deleteAlert.setContentText("Book deleted.");
+            deleteAlert.showAndWait();   
+        } else {
+            Alert errorAlert = new Alert(AlertType.ERROR);
+            errorAlert.setHeaderText("Delete Error");
+            errorAlert.setContentText("Please select a book from tableview to delete");
+            errorAlert.showAndWait();
         }
         tableview1.setItems(getBookList());
     }
@@ -137,7 +150,7 @@ public class FXMLController implements Initializable {
      */
     private void saveButtonListener() {
         save_btn.setOnAction((event) -> {
-            //check if the book is saved or not using get rest
+            //check if the book is saved or not using
             if(book.getBookTitle()!=null && checkRestGet()) {
                 restPost();
                 System.out.println("Book saved");
